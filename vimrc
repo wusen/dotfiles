@@ -3,8 +3,15 @@
 " ================ General Config ====================
 
 set number                      "Line numbers are good
+set relativenumber
 set backspace=indent,eol,start  "Allow backspace in insert mode
+
+set nobackup
+" set noswapfile
+set directory=c:\tmp
 set history=1000                "Store lots of :cmdline history
+
+set nowrap
 set showcmd                     "Show incomplete cmds down the bottom
 set showmode                    "Show current mode down the bottom
 set gcr=a:blinkon0              "Disable cursor blink
@@ -16,6 +23,9 @@ set autoread                    "Reload files changed outside vim
 " http://items.sjbach.com/319/configuring-vim-right
 set hidden
 
+" encoding
+set encoding=utf-8  " The encoding displayed.
+set fileencoding=utf-8  " The encoding written to file.
 
 syntax on
 
@@ -75,8 +85,3 @@ set smartcase       " ...unless we type a capital
 " specific to packages
 so ~/.vim/settings.vim
 
-
-
-" tagbar
-
-nmap <F8> :TagbarToggle<CR>

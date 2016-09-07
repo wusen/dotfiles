@@ -1,0 +1,15 @@
+
+git clone https://github.com/xolox/vim-misc
+git clone https://github.com/xolox/vim-session
+
+ctrlp.vim
+nerdtree
+tagbar
+vim-airline
+vim-airline-themes
+vim-colors-solarized
+vim-misc
+vim-pathogen
+vim-session
+
+
