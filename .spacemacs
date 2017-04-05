@@ -311,6 +311,16 @@ explicitly specified that a variable should be set before a package is loaded,
 you should place your code here."
 
   ;; org
+  (setq org-directory "~/org")
+  (setq org-default-notes-file "~/org/refile.org")
+  (global-set-key (kbd "C-c c") 'org-capture)
+
+  ;; Capture templates for: TODO tasks, Notes, appointments, phone calls, meetings, and org-protocol
+  (setq org-capture-templates
+        (quote (("t" "todo" entry (file "~/org/refile.org")
+                 "* TODO %?\n%U\n%a\n")
+                )))
+
   ; agenda files are organized here
   (setq org-agenda-files "~/org/agenda_files.org")
   (setq org-todo-keywords
@@ -332,6 +342,7 @@ you should place your code here."
   ;;    C-c ]
   ;;    C-c ;
   ;;    C-c C-x C-q  cancelling the clock (we never want this)
+
   (add-hook 'org-mode-hook
             '(lambda ()
                ;; Undefine C-c [ and C-c ] since this breaks my
@@ -342,7 +353,4 @@ you should place your code here."
                (org-defkey org-mode-map "\C-c;" 'undefined)
                (org-defkey org-mode-map "\C-c\C-x\C-q" 'undefined))
             'append)
-  )
-
-;; Do not write anything past this comment. This is where Emacs will
-;; auto-generate custom variable definitions.
+)
