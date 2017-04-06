@@ -311,18 +311,18 @@ explicitly specified that a variable should be set before a package is loaded,
 you should place your code here."
 
   ;; org
-  (setq org-directory "~/org")
-  (setq org-default-notes-file "~/org/refile.org")
+  (setq org-directory "~/org/")
+  (setq org-default-notes-file (concat org-directory "refile.org"))
   (global-set-key (kbd "C-c c") 'org-capture)
 
   ;; Capture templates for: TODO tasks, Notes, appointments, phone calls, meetings, and org-protocol
   (setq org-capture-templates
-        (quote (("t" "todo" entry (file "~/org/refile.org")
+        (quote (("t" "todo" entry (file (concat org-directory "refile.org"))
                  "* TODO %?\n%U\n%a\n")
                 )))
 
   ; agenda files are organized here
-  (setq org-agenda-files "~/org/agenda_files.org")
+  (setq org-agenda-files (concat org-directory "agenda_files.org"))
   (setq org-todo-keywords
         (quote ((sequence "TODO(t)" "NEXT(n)" "|" "DONE(d)")
                 (sequence "WAITING(w@/!)" "HOLD(h@/!)" "|" "CANCELLED(c@/!)" "PHONE" "MEETING"))))
