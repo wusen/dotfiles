@@ -353,4 +353,17 @@ you should place your code here."
                (org-defkey org-mode-map "\C-c;" 'undefined)
                (org-defkey org-mode-map "\C-c\C-x\C-q" 'undefined))
             'append)
+
+  ;; for GDB/debugging in general - used in MATLAB mode
+  (global-set-key (kbd "<f10>") 'gud-cont)
+  (global-set-key (kbd "<f9>") 'gud-step);; equiv matlab step in
+  (global-set-key (kbd "<f8>") 'gud-next) ;; equiv matlab step 1
+  (global-set-key (kbd "<f7>") 'gud-finish) ;; equiv matlab step out
+
+
+  (add-hook 'matlab-mode-hook
+            '(lambda ()
+               (local-set-key (kbd "C-c C-b") 'gud-break)
+               (local-set-key (kbd "C-c C-S-B") 'gud-remove))
+            'append)
 )
