@@ -41,8 +41,9 @@ values."
      ;; better-defaults
      emacs-lisp
      git
-     ;; markdown
      org
+     csv
+     markdown
      python
      extra-langs
      ranger
@@ -112,6 +113,7 @@ values."
    dotspacemacs-verbose-loading nil
    ;; Specify the startup banner. Default value is `official', it displays
    ;; the official spacemacs logo. An integer value is the index of text
+
    ;; banner, `random' chooses a random text banner in `core/banners'
    ;; directory. A string value must be a path to an image format supported
    ;; by your Emacs build.
@@ -124,7 +126,8 @@ values."
    ;; List sizes may be nil, in which case
    ;; `spacemacs-buffer-startup-lists-length' takes effect.
    dotspacemacs-startup-lists '((recents . 15)
-                                (projects . 7))
+                                (projects . 15)
+                                (todos . 5))
    ;; True if the home buffer should respond to resize events.
    dotspacemacs-startup-buffer-responsive t
    ;; Default major mode of the scratch buffer (default `text-mode')
@@ -133,11 +136,12 @@ values."
    ;; Press <SPC> T n to cycle to the next theme in the list (works great
    ;; with 2 themes variants, one dark and one light)
    dotspacemacs-themes '(spacemacs-light
-                         solarized-dark
+                         ;; solarized-dark
                          solarized-light
-                         leuven
-                         monokai
-                         zenburn)
+                         ;; leuven
+                         ;; monokai
+                         ;; zenburn
+                         )
    ;; If non nil the cursor color matches the state color in GUI Emacs.
    dotspacemacs-colorize-cursor-according-to-state t
    ;; Default font, or prioritized list of fonts. `powerline-scale' allows to
@@ -353,4 +357,34 @@ you should place your code here."
                (org-defkey org-mode-map "\C-c;" 'undefined)
                (org-defkey org-mode-map "\C-c\C-x\C-q" 'undefined))
             'append)
+
+  ;; for GDB/debugging in general - used in MATLAB mode
+  (global-set-key (kbd "<f10>") 'gud-cont)
+  (global-set-key (kbd "<f9>") 'gud-step);; equiv matlab step in
+  (global-set-key (kbd "<f8>") 'gud-next) ;; equiv matlab step 1
+  (global-set-key (kbd "<f7>") 'gud-finish) ;; equiv matlab step out
+
+
+  (add-hook 'matlab-mode-hook
+            '(lambda ()
+               (local-set-key (kbd "C-c C-b") 'gud-break) ;; set breakpoint
+               (local-set-key (kbd "C-c C-S-B") 'gud-remove)) ;; remove breakpoint
+            'append)
 )
+(custom-set-variables
+ ;; custom-set-variables was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ '(ansi-color-names-vector
+   ["#d2ceda" "#f2241f" "#67b11d" "#b1951d" "#3a81c3" "#a31db1" "#21b8c7" "#655370"])
+ '(custom-safe-themes
+   (quote
+    ("fa2b58bb98b62c3b8cf3b6f02f058ef7827a8e497125de0254f56e373abee088" default)))
+ '(evil-want-Y-yank-to-eol nil))
+(custom-set-faces
+ ;; custom-set-faces was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ )
