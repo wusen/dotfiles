@@ -31,6 +31,7 @@ values."
    ;; List of configuration layers to load.
    dotspacemacs-configuration-layers
    '(
+     windows-scripts
      ;; ----------------------------------------------------------------
      ;; Example of useful layers you may want to use right away.
      ;; Uncomment some layer names and press <SPC f e R> (Vim style) or
@@ -55,7 +56,7 @@ values."
      ;;        shell-default-position 'bottom)
      ;; spell-checking
      ;; syntax-checking
-     ;; version-control
+     version-control
      )
    ;; List of additional packages that will be installed without being
    ;; wrapped in a layer. If you need some configuration for these
@@ -125,7 +126,7 @@ values."
    ;; `recents' `bookmarks' `projects' `agenda' `todos'."
    ;; List sizes may be nil, in which case
    ;; `spacemacs-buffer-startup-lists-length' takes effect.
-   dotspacemacs-startup-lists '((recents . 15)
+   dotspacemacs-startup-lists '((recents . 25)
                                 (projects . 15)
                                 (todos . 5))
    ;; True if the home buffer should respond to resize events.
@@ -260,8 +261,18 @@ values."
    ;; scrolling overrides the default behavior of Emacs which recenters point
    ;; when it reaches the top or bottom of the screen. (default t)
    dotspacemacs-smooth-scrolling t
-   ;; If non nil line numbers are turned on in all `prog-mode' and `text-mode'
-   ;; derivatives. If set to `relative', also turns on relative line numbers.
+   ;; Control line numbers activation.
+   ;; If set to `t' or `relative' line numbers are turned on in all `prog-mode' and
+   ;; `text-mode' derivatives. If set to `relative', line numbers are relative.
+   ;; This variable can also be set to a property list for finer control:
+   ;; '(:relative nil
+   ;;   :disabled-for-modes dired-mode
+   ;;                       doc-view-mode
+   ;;                       markdown-mode
+   ;;                       org-mode
+   ;;                       pdf-view-mode
+   ;;                       text-mode
+   ;;   :size-limit-kb 1000)
    ;; (default nil)
    dotspacemacs-line-numbers nil
    ;; Code folding method. Possible values are `evil' and `origami'.
@@ -323,6 +334,12 @@ you should place your code here."
   (setq org-capture-templates
         (quote (("t" "todo" entry (file (concat org-directory "refile.org"))
                  "* TODO %?\n%U\n%a\n")
+                ("j" "Journal" entry (file+datetree (concat org-directory "diary.org"))
+                 "* %?\n%U\n" :clock-in t :clock-resume t)
+                ("m" "Meeting" entry (file (concat org-directory "refile.org"))
+                 "* MEETING with %? :MEETING:\n%U" :clock-in t :clock-resume t)
+                ("p" "Phone call" entry (file (concat org-directory "refile.org"))
+                 "* PHONE %? :PHONE:\n%U" :clock-in t :clock-resume t)
                 )))
 
   ; agenda files are organized here
@@ -340,6 +357,20 @@ you should place your code here."
                 ("CANCELLED" :foreground "forest green" :weight bold)
                 ("MEETING" :foreground "forest green" :weight bold)
                 ("PHONE" :foreground "forest green" :weight bold))))
+  ;; Refile setup
+  ;; Targets include this file and any file contributing to the agenda - up to 9 levels deep
+  (setq org-refile-targets (quote ((nil :maxlevel . 3)
+                                   (org-agenda-files :maxlevel . 2))))
+
+  ;; Use full outline paths for refile targets - we file directly with IDO
+  (setq org-refile-use-outline-path t)
+
+  ;; Targets complete directly with IDO
+  (setq org-outline-path-complete-in-steps nil)
+
+  ;; Allow refile to create parent tasks with confirmation
+  (setq org-refile-allow-creating-parent-nodes (quote confirm))
+
 
   ;; Disable keys in org-mode
   ;;    C-c [
@@ -370,18 +401,26 @@ you should place your code here."
                (local-set-key (kbd "C-c C-b") 'gud-break) ;; set breakpoint
                (local-set-key (kbd "C-c C-S-B") 'gud-remove)) ;; remove breakpoint
             'append)
+  ;; Python workaround
+  ;; https://emacs.stackexchange.com/questions/30082/your-python-shell-interpreter-doesn-t-seem-to-support-readline
+  (with-eval-after-load 'python
+    (defun python-shell-completion-native-try ()
+      "Return non-nil if can trigger native completion."
+      (let ((python-shell-completion-native-enable t)
+            (python-shell-completion-native-output-timeout
+             python-shell-completion-native-try-output-timeout))
+        (python-shell-completion-native-get-completions
+         (get-buffer-process (current-buffer))
+         nil "_"))))
 )
 (custom-set-variables
  ;; custom-set-variables was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
- '(ansi-color-names-vector
-   ["#d2ceda" "#f2241f" "#67b11d" "#b1951d" "#3a81c3" "#a31db1" "#21b8c7" "#655370"])
- '(custom-safe-themes
+ '(package-selected-packages
    (quote
-    ("fa2b58bb98b62c3b8cf3b6f02f058ef7827a8e497125de0254f56e373abee088" default)))
- '(evil-want-Y-yank-to-eol nil))
+    (dash powershell ws-butler which-key use-package toc-org spaceline smeargle restart-emacs request ranger pyvenv persp-mode orgit org-plus-contrib org-download neotree move-text mmm-mode markdown-toc markdown-mode magit-gitflow live-py-mode link-hint info+ indent-guide hungry-delete highlight-indentation hide-comnt help-fns+ helm-make helm helm-core gitattributes-mode git-timemachine git-messenger git-link eyebrowse expand-region exec-path-from-shell evil-surround evil-nerd-commenter evil-mc evil-matchit evil-escape evil-ediff evil-anzu dumb-jump diminish company-statistics column-enforce-mode bind-key auto-compile packed aggressive-indent ace-window ace-link avy auto-complete anaconda-mode company yasnippet counsel iedit smartparens magit magit-popup highlight evil git-commit async alert log4e projectile hydra f s ivy yapfify wolfram-mode with-editor winum wgrep volatile-highlights vi-tilde-fringe uuidgen undo-tree thrift swiper stan-mode smex scad-mode rainbow-delimiters qml-mode pytest pyenv-mode py-isort powerline popwin popup pkg-info pip-requirements pcre2el paradox org-projectile org-present org-pomodoro org-bullets open-junk-file matlab-mode macrostep lorem-ipsum linum-relative julia-mode ivy-hydra hy-mode htmlize hl-todo highlight-parentheses highlight-numbers goto-chg google-translate golden-ratio gnuplot gntp gitignore-mode gitconfig-mode git-gutter-fringe git-gutter-fringe+ gh-md fuzzy flx-ido fill-column-indicator fancy-battery evil-visualstar evil-visual-mark-mode evil-unimpaired evil-tutor evil-search-highlight-persist evil-numbers evil-magit evil-lisp-state evil-indent-plus evil-iedit-state evil-exchange evil-args eval-sexp-fu elisp-slime-nav diff-hl define-word cython-mode csv-mode counsel-projectile company-auctex company-anaconda clean-aindent-mode auto-yasnippet auto-highlight-symbol arduino-mode anzu adaptive-wrap ac-ispell))))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
