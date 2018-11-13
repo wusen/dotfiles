@@ -31,29 +31,36 @@ values."
    ;; List of configuration layers to load.
    dotspacemacs-configuration-layers
    '(
-     windows-scripts
      ;; ----------------------------------------------------------------
      ;; Example of useful layers you may want to use right away.
      ;; Uncomment some layer names and press <SPC f e R> (Vim style) or
      ;; <M-m f e R> (Emacs style) to install them.
      ;; ----------------------------------------------------------------
-     ivy
+     (ivy :variables
+          ivy-enable-advanced-buffer-information t
+          ivy-count-format "(%d/%d) "
+          )
      auto-completion
      ;; better-defaults
+     windows-scripts
      emacs-lisp
      git
      org
      csv
      markdown
      python
-     extra-langs
+     (extra-langs :variables
+                  matlab-functions-have-end t
+                  matlab-indent-function-body t
+                  matlab-auto-fill nil
+                  )
      ranger
      (latex :variables
-            latex-enable-auto-fill t
+            latex-enable-auto-fill nil
             latex-enable-folding t)
-     ;; (shell :variables
-     ;;        shell-default-height 30
-     ;;        shell-default-position 'bottom)
+     (shell :variables
+            shell-default-height 30
+            shell-default-position 'bottom)
      ;; spell-checking
      ;; syntax-checking
      version-control
@@ -114,7 +121,6 @@ values."
    dotspacemacs-verbose-loading nil
    ;; Specify the startup banner. Default value is `official', it displays
    ;; the official spacemacs logo. An integer value is the index of text
-
    ;; banner, `random' chooses a random text banner in `core/banners'
    ;; directory. A string value must be a path to an image format supported
    ;; by your Emacs build.
@@ -325,6 +331,9 @@ This is the place where most of your configurations should be done. Unless it is
 explicitly specified that a variable should be set before a package is loaded,
 you should place your code here."
 
+  ;; golden ration scroll
+  (golden-ratio-mode)
+
   ;; org
   (setq org-directory "~/org/")
   (setq org-default-notes-file (concat org-directory "refile.org"))
@@ -412,6 +421,8 @@ you should place your code here."
         (python-shell-completion-native-get-completions
          (get-buffer-process (current-buffer))
          nil "_"))))
+
+  (add-hook 'matlab-mode-hook 'auto-complete-mode)
 )
 (custom-set-variables
  ;; custom-set-variables was added by Custom.
@@ -420,7 +431,7 @@ you should place your code here."
  ;; If there is more than one, they won't work right.
  '(package-selected-packages
    (quote
-    (dash powershell ws-butler which-key use-package toc-org spaceline smeargle restart-emacs request ranger pyvenv persp-mode orgit org-plus-contrib org-download neotree move-text mmm-mode markdown-toc markdown-mode magit-gitflow live-py-mode link-hint info+ indent-guide hungry-delete highlight-indentation hide-comnt help-fns+ helm-make helm helm-core gitattributes-mode git-timemachine git-messenger git-link eyebrowse expand-region exec-path-from-shell evil-surround evil-nerd-commenter evil-mc evil-matchit evil-escape evil-ediff evil-anzu dumb-jump diminish company-statistics column-enforce-mode bind-key auto-compile packed aggressive-indent ace-window ace-link avy auto-complete anaconda-mode company yasnippet counsel iedit smartparens magit magit-popup highlight evil git-commit async alert log4e projectile hydra f s ivy yapfify wolfram-mode with-editor winum wgrep volatile-highlights vi-tilde-fringe uuidgen undo-tree thrift swiper stan-mode smex scad-mode rainbow-delimiters qml-mode pytest pyenv-mode py-isort powerline popwin popup pkg-info pip-requirements pcre2el paradox org-projectile org-present org-pomodoro org-bullets open-junk-file matlab-mode macrostep lorem-ipsum linum-relative julia-mode ivy-hydra hy-mode htmlize hl-todo highlight-parentheses highlight-numbers goto-chg google-translate golden-ratio gnuplot gntp gitignore-mode gitconfig-mode git-gutter-fringe git-gutter-fringe+ gh-md fuzzy flx-ido fill-column-indicator fancy-battery evil-visualstar evil-visual-mark-mode evil-unimpaired evil-tutor evil-search-highlight-persist evil-numbers evil-magit evil-lisp-state evil-indent-plus evil-iedit-state evil-exchange evil-args eval-sexp-fu elisp-slime-nav diff-hl define-word cython-mode csv-mode counsel-projectile company-auctex company-anaconda clean-aindent-mode auto-yasnippet auto-highlight-symbol arduino-mode anzu adaptive-wrap ac-ispell))))
+    (org-category-capture log4e gntp markdown-mode fringe-helper git-gutter+ git-gutter bind-key org-mime powerline hydra dash-functional helm helm-core counsel swiper ivy yasnippet packed anaconda-mode avy auctex company iedit smartparens highlight evil magit magit-popup git-commit ghub with-editor async alert projectile epl org-plus-contrib pythonic s dash golden-ratio-scroll-screen auto-complete yapfify xterm-color ws-butler wolfram-mode winum which-key wgrep volatile-highlights vi-tilde-fringe uuidgen use-package toc-org thrift stan-mode spaceline solarized-theme smex smeargle shell-pop scad-mode restart-emacs request ranger rainbow-delimiters qml-mode pyvenv pytest pyenv-mode py-isort powershell popwin pip-requirements persp-mode pcre2el paradox orgit org-projectile org-present org-pomodoro org-download org-bullets open-junk-file neotree multi-term move-text mmm-mode matlab-mode markdown-toc magit-gitflow macrostep lorem-ipsum live-py-mode linum-relative link-hint julia-mode ivy-hydra info+ indent-guide hy-mode hungry-delete htmlize hl-todo highlight-parentheses highlight-numbers highlight-indentation hide-comnt help-fns+ helm-make google-translate golden-ratio gnuplot gitignore-mode gitconfig-mode gitattributes-mode git-timemachine git-messenger git-link git-gutter-fringe git-gutter-fringe+ gh-md fuzzy flx-ido fill-column-indicator fancy-battery eyebrowse expand-region exec-path-from-shell evil-visualstar evil-visual-mark-mode evil-unimpaired evil-tutor evil-surround evil-search-highlight-persist evil-numbers evil-nerd-commenter evil-mc evil-matchit evil-magit evil-lisp-state evil-indent-plus evil-iedit-state evil-exchange evil-escape evil-ediff evil-args evil-anzu eval-sexp-fu eshell-z eshell-prompt-extras esh-help elisp-slime-nav dumb-jump diminish diff-hl define-word cython-mode csv-mode counsel-projectile company-statistics company-auctex company-anaconda column-enforce-mode clean-aindent-mode auto-yasnippet auto-highlight-symbol auto-compile auctex-latexmk arduino-mode aggressive-indent adaptive-wrap ace-window ace-link ac-ispell))))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
